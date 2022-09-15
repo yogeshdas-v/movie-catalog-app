@@ -1,0 +1,60 @@
+version: "3"
+services:
+
+  ## local empire
+  php-hodor:
+    container_name: ${PHP_CONTAINER_NAME:-hodor}
+    build:
+      context: ./
+      dockerfile: ./php/dev.Dockerfile
+    volumes:
+      - ..:/var/www/hodor:rw,delegated
+      - type: bind
+        source: "${USER_SSH_DIR_PATH:-~/.ssh}"
+        target: /root/.ssh/
+        read_only: true
+      - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
+    environment:
+        SSH_AUTH_SOCK: /ssh-agent
+    networks:
+      - hodor-net
+        # ipv4_address: 172.25.0.2
+    dns:
+      - 172.16.140.33
+    working_dir: /var/www/hodor
+
+  nginx-hodor:
+    image: nginx:stable-alpine
+    container_name: nginx-hodor
+    # restart: unless-stopped
+    volumes:
+      - ..:/var/www/hodor:rw,delegated
+      - "./nginx:/etc/nginx/conf.d"
+    working_dir: "/var/www/hodor"
+    depends_on:
+      - php-hodor
+    ports:
+      - "${DOCKER_APP_PORT:-8787}:80"
+    networks: 
+      # - hodor
+      hodor-net:
+        ipv4_address: 172.25.0.4
+
+
+
+  redis-hodor:
+    image: redis:alpine
+    container_name: redis-hodor
+    ports:
+      - ${REDIS_SERVICE_PORT:-6179}:6379
+    command: redis-server
+    networks:
+      - hodor-net
+
+networks:
+  hodor-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.25.0.0/16

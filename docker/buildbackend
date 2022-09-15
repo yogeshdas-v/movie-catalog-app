@@ -1,0 +1,29 @@
+FROM harbor-adc.internal.media.net/cm/admin-interface/phpfpm-dev:8.1.6.v1 as php-base
+
+COPY --from=harbor-aws.internal.media.net/hb/base/composer:2 /usr/bin/composer /usr/local/bin/composer
+
+# RUN apk add git zip unzip openssh
+
+ARG ssh_prv_key
+ARG ssh_pub_key
+
+WORKDIR /code
+
+# Authorize SSH Host
+RUN mkdir -p /root/.ssh
+RUN chmod 0700 /root/.ssh
+RUN ssh-keyscan -t rsa tree.mn > /root/.ssh/known_hosts
+
+# Add the keys and set permissions
+RUN echo "$ssh_prv_key" > /root/.ssh/id_rsa && \
+    echo "$ssh_pub_key" > /root/.ssh/id_rsa.pub && \
+    chmod 600 /root/.ssh/id_rsa && \
+    chmod 600 /root/.ssh/id_rsa.pub
+
+COPY . ./
+
+RUN composer install --optimize-autoloader --no-dev
+
+FROM scratch AS export-stage
+
+COPY --from=php-base /code/vendor ./vendor

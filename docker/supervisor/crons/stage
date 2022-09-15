@@ -1,0 +1,1 @@
+* * * * * www-data /usr/local/bin/php /data/domains/skenzo/AdminInterfaces_Stage/artisan schedule:run >> /dev/null 2>&1

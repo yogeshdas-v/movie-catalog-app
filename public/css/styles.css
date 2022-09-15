@@ -1,0 +1,170 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: #394B71;
+    color: white;
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+}
+input, textarea{
+    font-family: 'Poppins', sans-serif;
+}
+header {
+    /* border: 1px solid black; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px 100px;
+}
+.search-input {
+    outline: none;
+    width: 300px;
+    height: 50px;
+    padding: 0px 15px;
+    font-size: 17px;
+    margin: 0px 20px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    transition: border-radius 0.1s ease-out;
+    border: 1px solid white;
+}
+.search-input::placeholder{
+    color: white;
+}
+.search-input:hover {
+    border-radius: 10px;
+}
+.btn {
+    font-size: 16px;
+    cursor: pointer;
+    background-color: transparent;
+    color: #e46f41;
+    border: none;
+}
+.btn:hover {
+    transform: scale(1.02);
+    text-decoration: underline;
+}
+.content-wrapper {
+    /* border: 1px solid black; */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0px 100px 50px;
+    gap: 50px;
+}
+.movie-card {
+    /* border: 1px solid black; */
+    position: relative;
+}
+.movie-img{
+   height: 400px;
+   width: 100%;
+   box-shadow: 0 0 10px 5px #202437;
+   cursor: pointer;
+   transition: box-shadow 0.3s ease-out;
+}
+.movie-img:hover{
+    box-shadow: 0 0 10px 10px #202437;
+}
+.movie-id{
+    position: absolute;
+    color: transparent;
+}
+.movie-title{
+    margin: 5px 0px;
+}
+.fa-star {
+    position: absolute;
+    font-size: 60px;
+    right: -30px;
+    top: 300px;     
+    color: #facd01;
+    cursor: pointer;
+}
+
+.new-movie-form-wrapper {
+    /* border: 1px solid white; */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    visibility: hidden;
+}
+form{
+    /* border: 1px solid white; */
+    background-color: #0D1117;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    width: 600px;
+    position: fixed;
+    top: 50px;
+    
+}
+form p {
+    font-size: 24px;
+    margin: 10px 0px;
+}
+form hr {
+    margin: 10px 0px;
+    color: #242930;
+}
+form label{
+    margin: 10px 0 5px;
+}
+form input::placeholder{
+    font-family: 'Poppins', sans-serif;
+}
+form input, form textarea {
+    margin: 5px 0px 10px;
+}
+form input, form textarea {
+    height: 50px;
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+    background-color: #0D1117;
+    color: white;
+    border: 2px solid #242930;
+    border-radius: 5px;
+}
+form textarea{
+    height: initial;
+}
+form button {
+    margin: 10px 0px;
+    align-self: flex-start;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    color: white;
+    background-color: #238636;
+    border: none;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+}
+form button:hover{
+    box-shadow: 0 0 5px 3px #242930;
+}
+.fa-xmark {
+    color: #e46f41;
+    position: absolute;
+    top: 30x;
+    right: 30px;
+    font-size: 24px;
+    cursor: pointer;
+}
+.fa-xmark:hover {
+    transform: scale(1.05);
+}
+form .id {
+    visibility: collapse;
+    
+}
