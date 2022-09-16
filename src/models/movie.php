@@ -20,6 +20,14 @@
             $stmt->execute();
             return $stmt->get_result();
         }
+        public function search($title) {
+            $query = "SELECT * FROM $this->table WHERE title LIKE ? ORDER BY title;";
+            $stmt = $this->db->prepare($query);
+            $movie_name = "%".$title."%";
+            $stmt->bind_param("s", $movie_name);
+            $stmt->execute();
+            return $stmt->get_result();
+        }
         public function create($title, $description, $cast, $imagePathUrl) {
             $query = "INSERT INTO Movies(title, description, cast, imagePathUrl)
                       VALUES(?, ?, ?, ?);";
@@ -39,24 +47,16 @@
             return $stmt;
         }
 
-        public function markFavorite($id){
+        public function modifyFavorite($id, $isFavorite) {
             $query = "UPDATE $this->table
-                      SET isFavorite = 1 
+                      SET isFavorite = ?
                       WHERE id = ?;";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param("i", $id);
+            $stmt->bind_param("ii", $isFavorite, $id);
             $stmt->execute();
             return $stmt;
         }
-        public function unmarkFavorite($id){
-            $query = "UPDATE $this->table
-                      SET isFavorite = 0
-                      WHERE id = ?;";
-            $stmt = $this->db->prepare($query);
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            return $stmt;
-        }
+        
 
     }
 ?>

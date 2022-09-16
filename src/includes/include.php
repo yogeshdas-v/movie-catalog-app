@@ -8,18 +8,4 @@ $database = new Database();
 $db = $database->connect();
 
 $movie = new Movie($db);
-
-$data = json_decode(file_get_contents('php://input'));
-
-
-$isMarked = $movie->markFavorite($data->id);
-var_dump($isMarked);
-if($isMarked) {
-    
-    echo json_encode(
-        array("message" => "Marked Favorite Succesfully")
-    );
-}
-
-
 ?>
