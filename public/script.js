@@ -3,7 +3,6 @@ const description_input = document.querySelector(".description");
 const cast_input = document.querySelector(".cast");
 const imagePathUrl_input = document.querySelector(".imagePathUrl");
 const new_movie_form_wrapper = document.querySelector(".new-movie-form-wrapper");
-const update_profile_btn = document.querySelector(".update-profile-btn");
 
 function fetchMovies(url = "/api/read.php") {
 	fetch(url)
@@ -16,10 +15,6 @@ function fetchMovies(url = "/api/read.php") {
 				// console.log(movie)
 				const movie_node = document.createElement("div");
 				movie_node.className = "movie-card";
-				// movie_node.addEventListener('click', function(event) {
-				// 	url = '/api/details.php?m=' + movie.id;
-				// 	window.open(url)
-				// })
 				const star_classlist_value =
 					movie.isFavorite == 1
 						? "fa-solid fa-star"
@@ -29,15 +24,19 @@ function fetchMovies(url = "/api/read.php") {
                                 <p class="movie-title">${movie.title}</p>
                                 <input type="button" class="edit-movie-btn btn" value="Edit">
                                 <i class="${star_classlist_value}" onclick="toggleFavorite(this, ${movie.id}, ${movie.isFavorite})"></i>`;
-
+				const movie_img = movie_node.children[0];
+				movie_img.addEventListener('click', function() {
+					window.open('/api/details.php?m=' + movie.id)
+				})
 				const movie_edit_btn = movie_node.children[2];
 				movie_edit_btn.addEventListener("click", function (event1) {
-
+					document.querySelector('.form-title').innerText = 'Edit Movie';
 					prefillUpdateForm(movie);
-					update_profile_btn.addEventListener("click", (event2) => {
+					const update_profile_btn = document.querySelector(".update-profile-btn");
+					// console.log(update_profile_btn);
+					update_profile_btn.onclick =  function(updateEvent){
 						updateMovie(event1.target.parentElement.children[0], movie);
-						
-					});
+					};
 					
 					
 				});
@@ -64,7 +63,6 @@ function updateMovie(movie_card_img, movie) {
 	}).then(() => {
 		movie_card_img.src = movie.imagePathUrl;
 		hideMovieForm();
-		
 	});
 }
 function prefillUpdateForm(movie) {
@@ -111,14 +109,17 @@ function showMovieForm() {
 	new_movie_form_wrapper.style.visibility = "visible";
 }
 
-document.querySelector(".add-movie-btn").addEventListener("click", function () {
+document.querySelector(".add-movie-btn").addEventListener("click", function (event1) {
 	title_input.disabled = false;
 	title_input.style.opacity = 0.5;
 	title_input.style.cursor = "unset";
 	resetFormInputs();
+	document.querySelector('.form-title').innerText = 'New Movie';
 	showMovieForm();
-
-	update_profile_btn.addEventListener("click", (event) => {
+	const update_profile_btn = document.querySelector(".update-profile-btn");
+	// update_profile_btn.replaceWith(update_profile_btn.cloneNode(true));
+	// console.log(update_profile_btn);
+	update_profile_btn.onclick = function(addEvent) {
 		fetch("/api/create.php", {
 			method: "post",
 			body: JSON.stringify({
@@ -132,9 +133,11 @@ document.querySelector(".add-movie-btn").addEventListener("click", function () {
 		.then((data) => {
 			hideMovieForm();
 			fetchMovies();
-		})
+			// update_profile_btn.replaceWith(update_profile_btn.cloneNode(true));
+		});
 		
-	});
+	}
+	
 			
 });
 

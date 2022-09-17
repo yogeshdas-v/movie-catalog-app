@@ -21,7 +21,7 @@
     </div>
     <div class="new-movie-form-wrapper">
         <div class="new-movie-form" target = "_blank">
-            <p>New Movie</p>
+            <p class="form-title">New Movie</p>
             <hr class="horizontal-rule"/>
             <label for="title">Name</label>
             <input class="title form-input" type="text" name="title" placeholder="Enter a movie name" required>
